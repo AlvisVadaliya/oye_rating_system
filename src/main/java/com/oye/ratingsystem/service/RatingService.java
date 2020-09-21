@@ -113,7 +113,7 @@ public class RatingService implements RatingContract.Service {
             responseAvgRateDTO.setMessage(RatingContract.Dto.ResponseAvgRate.USER_NOT_FOUND);
             return responseAvgRateDTO;
         }
-        else if(driverRepository.existsById(driverId) && driverRepository.getOne(driverId).getAvgRating() == null){
+        else if(driverRepository.existsById(driverId) && driverRepository.getOne(driverId).getAvgRating() == 0){
             responseAvgRateDTO.setAvgRating(-1F);
             responseAvgRateDTO.setMessage(RatingContract.Dto.ResponseAvgRate.RATING_NOT_FOUND);
             return responseAvgRateDTO;
@@ -135,7 +135,7 @@ public class RatingService implements RatingContract.Service {
             responseAvgRateDTO.setMessage(RatingContract.Dto.ResponseAvgRate.USER_NOT_FOUND);
             return responseAvgRateDTO;
         }
-        else if(passengerRepository.existsById(passengerId) && passengerRepository.getOne(passengerId).getAvgRating() == null){
+        else if(passengerRepository.existsById(passengerId) && passengerRepository.getOne(passengerId).getAvgRating() == 0){
             responseAvgRateDTO.setAvgRating(-1F);
             responseAvgRateDTO.setMessage(RatingContract.Dto.ResponseAvgRate.RATING_NOT_FOUND);
             return responseAvgRateDTO;
