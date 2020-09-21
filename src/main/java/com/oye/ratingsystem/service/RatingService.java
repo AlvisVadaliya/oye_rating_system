@@ -85,11 +85,11 @@ public class RatingService implements RatingContract.Service {
         return  rideRepository.updatePassengerRating(request.getRideId(), request.getRate()) == 1;
     }
     private void setPassengerAvgRating(RatingContract.Dto.RequestRate request) {
-        Passenger passenger= rideRepository.getOne(request.getRideId()).getPassenger();
+        Passenger passenger = rideRepository.getOne(request.getRideId()).getPassenger();
         Float oldAvgRating = passenger.getAvgRating();
         Integer oldCount = passenger.getRatingCount();
         Float newAvgRating = 0f;
-        Float oldRating = rideRepository.getOne(request.getRideId()).getDriverRate();
+        Float oldRating = rideRepository.getOne(request.getRideId()).getPassengerRate();
         Float newRating = request.getRate();
 
         if(oldRating != 0f && oldCount != 0){
