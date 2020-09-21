@@ -42,18 +42,21 @@ public class RatingService implements RatingContract.Service {
     private void setDriverAvgRating(RatingContract.Dto.RequestRate request) {
         Driver driver = rideRepository.getOne(request.getRideId()).getDriver();
         Float oldAvgRating = driver.getAvgRating();
-        Float newDriverAvgRating = request.getRate();
-        Float oldDriverRating = rideRepository.getOne(request.getRideId()).getDriverRate();
-        Float newDriverRating = request.getRate();
+        Integer oldCount = driver.getRatingCount();
+        Float newAvgRating = 0f;
+        Float oldRating = rideRepository.getOne(request.getRideId()).getDriverRate();
+        Float newRating = request.getRate();
 
-        if(oldDriverRating != null && oldAvgRating != null){
+        if(oldRating != 0f && oldCount != 0){
             // already rated before so remove previous rating from AvgRating and try to rate again for same Ride
-            newDriverAvgRating = (findPreviousAvgRating(oldAvgRating, oldDriverRating) + newDriverRating)/2;
+            newAvgRating = oldAvgRating + (newRating-oldRating)/oldCount;
         }
-        else if(oldAvgRating != null){
-            newDriverAvgRating = (oldAvgRating + newDriverRating)/2;
+        else {
+            //normal case
+            newAvgRating = ((oldAvgRating*oldCount) + newRating)/(oldCount+1);
+            driver.setRatingCount(oldCount+1);
         }
-        driver.setAvgRating(newDriverAvgRating);
+        driver.setAvgRating(newAvgRating);
         driverRepository.save(driver);
     }
 
@@ -82,20 +85,23 @@ public class RatingService implements RatingContract.Service {
         return  rideRepository.updatePassengerRating(request.getRideId(), request.getRate()) == 1;
     }
     private void setPassengerAvgRating(RatingContract.Dto.RequestRate request) {
-        Passenger passenger = rideRepository.getOne(request.getRideId()).getPassenger();
+        Passenger passenger= rideRepository.getOne(request.getRideId()).getPassenger();
         Float oldAvgRating = passenger.getAvgRating();
-        Float newPassengerAvgRating = request.getRate();
-        Float oldPassengerRating = rideRepository.getOne(request.getRideId()).getPassengerRate();
-        Float newPassengerRating = request.getRate();
+        Integer oldCount = passenger.getRatingCount();
+        Float newAvgRating = 0f;
+        Float oldRating = rideRepository.getOne(request.getRideId()).getDriverRate();
+        Float newRating = request.getRate();
 
-        if(oldPassengerRating != null && oldAvgRating != null){
+        if(oldRating != 0f && oldCount != 0){
             // already rated before so remove previous rating from AvgRating and try to rate again for same Ride
-            newPassengerAvgRating = (findPreviousAvgRating(oldAvgRating, oldPassengerRating) + newPassengerRating)/2;
+            newAvgRating = oldAvgRating + (newRating-oldRating)/oldCount;
         }
-        else if(oldAvgRating != null){
-            newPassengerAvgRating = (oldAvgRating + newPassengerRating)/2;
+        else {
+            //normal case
+            newAvgRating = ((oldAvgRating*oldCount) + newRating)/(oldCount+1);
+            passenger.setRatingCount(oldCount+1);
         }
-        passenger.setAvgRating(newPassengerAvgRating);
+        passenger.setAvgRating(newAvgRating);
         passengerRepository.save(passenger);
     }
 

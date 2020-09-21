@@ -21,4 +21,6 @@ public class Driver {
     List<Ride> rides;
 
     Float avgRating;
+
+    Integer ratingCount;
 }

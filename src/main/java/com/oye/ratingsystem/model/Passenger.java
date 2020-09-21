@@ -21,4 +21,6 @@ public class Passenger {
     List<Ride> rides;
 
     Float avgRating;
+
+    Integer ratingCount;
 }
