@@ -1,4 +1,4 @@
-# Oye Rating System
+# Taxi Rating System
 #### Assumptions
   - Driver, Passanger accounts and Rides are already there in a table. 
   - These API will be called from secure server or some internal service;
